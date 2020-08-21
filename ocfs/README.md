@@ -63,9 +63,53 @@ These flags hold information about the partition.
 #### // Boot Loader //
 
 ##### / Stage One /
-The BIOS should load and execute the first 512 bytes of the disk as the stage one bootloader. If the disk is NOT bootable, this should simply display the text "Non-System Disk or Disk Error." It should wait for a keypress and restart. If the disk IS bootable, the boot loader should load and execute sectors 10 through 32 of the disk.
+The BIOS should load and execute the first 512 bytes of the disk as the stage one bootloader. If the disk is NOT bootable, this should simply display the text `Non-System Disk or Disk Error.`, wait for a keypress, and restart. If the disk IS bootable, the boot loader should load and execute sectors 10 through 32 of the disk.
 
 ##### / Stage Two /
 The stage two boot loader should be stored between sectors 10 and 32 of the disk - a total of 11 KB of space. The rest of the disk should be dedicated to partitions.
 
-The recommended filesystem for boot-loader data storage is the Bootloader Read-Only File System documented [here](https://ocfs.github.io/brofs).
+The recommended filesystem for storage of bootloader data, such as filesystem drivers, is the Bootloader Read-Only File System documented [here](https://ocfs.github.io/brofs).
+
+## // The Filesystem //
+
+Now, OCFS documentation.
+
+OCFS uses inodes, or index nodes, for file storage. All sectors excepting inodes and data sectors are unused.
+
+Sectors should be marked as used or unused - if the first byte of a sector is the ASCII character `i`, the sector is an inode. If the first byte is the ASCII character `d`, the sector contains file data. If the first byte is the ASCII character `e`, the sector contains extended file sector data. If the first byte is the ASCII null character `\\0`, the sector is unused. These flags must be set when creating and deleting files.
+
+```
++------------------------------------------------+
+| Inode Format                                   |
++--------+---------------------------------------+
+| Bytes  | Description                           |
++--------+---------------------------------------+
+| 1      | ASCII character 'i'; inode signature. |
++--------+---------------------------------------+
+| 2      | File type. See 'File Types' below.    |
++--------+---------------------------------------+
+| 3-4    | File permissions, 2 bytes. See 'File  |
+|        | Permissions' below.                   |
++--------+---------------------------------------+
+| 5-8    | Owner UID, 4 bytes.                   |
++--------+---------------------------------------+
+| 9-12   | Group ID, 4 bytes.                    |
++--------+---------------------------------------+
+| 11-20  | POSIX 64-bit last modified timestamp. |
++--------+---------------------------------------+
+| 21-64  | Case-sensitive filename, up to 44     |
+|        | ASCII characters or bytes.            |
++--------+---------------------------------------+
+| 65-504 | 8-byte chunks: If the inode describes |
+|        | a file, pointers to the file data     |
+|        | sectors, in order. If the inode       |
+|        | describes a directory, contains       |
+|        | pointers to the directory's children, |
+|        | in order.                             |
++--------+---------------------------------------+
+|505-512 | Pointer to a sector containing        |
+|        | extensions of the previous pointer    |
+|        | section; value should always be 0 if  |
+|        | there is none.                        |
++--------+---------------------------------------+
+```
