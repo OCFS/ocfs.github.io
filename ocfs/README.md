@@ -16,12 +16,17 @@ Sector 1 holds some information about the filesystem. The root inode is stored o
 
 ```
 +------------------------------------------------+
-| OCFS Data Format                               |
+| OCFS Superblock Format                         |
 +--------+---------------------------------------+
 | Bytes  | Description                           |
 +--------+---------------------------------------+
-| 1      | Filesystem flags - see 'Filesystem    |
+| 1-7    | Filesystem signature: ASCII string    |
+|        | '\27OCFS\13\27'                       |
++--------+---------------------------------------+
+| 8      | Filesystem flags - see 'Filesystem    |
 |        | Flags' below.                         |
++--------+---------------------------------------+
+| 9-512  | (8-byte chunks) Free sector cache.    |
 +--------+---------------------------------------+
 
 +------------------------------------------------+
