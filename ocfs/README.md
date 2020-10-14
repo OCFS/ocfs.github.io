@@ -10,7 +10,7 @@ All numbers are little-endian. All references to KB, MB, TB, GB, PB, EB, etc. re
 
 OCFS uses inodes, sometimes known as index nodes, for file storage. All sectors excepting inodes and data sectors are unused. All references to "sector" are relative to a partition.
 
-Sectors should be marked as used or unused - if the first byte of a sector is the ASCII character `i`, the sector is an inode. If the first byte is the ASCII character `d`, the sector contains file data. If the first byte is the ASCII character `e`, the sector contains extended file sector data. If the first byte is the ASCII null character `\\0`, the sector is unused. These flags must be set when creating and deleting files.
+Sectors should be marked as used or unused - if the first byte of a sector is the ASCII character `i`, the sector is an inode. If the first byte is the ASCII character `d`, the sector contains file data. If the first byte is the ASCII character `e`, the sector contains extended file sector data. If the first byte is the ASCII null character `\0`, the sector is unused. These flags must be set when creating and deleting files.
 
 Sector 1 holds some information about the filesystem. The root inode is stored on sector 2.
 
@@ -100,22 +100,22 @@ OCFS file permissions are laid out over 9 bits (the final 7 bits of the allocate
 -------------------------+
 | Bit       | Permission |
 +-----------+------------+
-| 100000000 | Owner R    |
+| 0x01      | Owner R    |
 +-----------+------------+
-| 010000000 | Owner W    |
+| 0x02      | Owner W    |
 +-----------+------------+
-| 001000000 | Owner X    |
+| 0x04      | Owner X    |
 +-----------+------------+
-| 000100000 | Group R    |
+| 0x08      | Group R    |
 +-----------+------------+
-| 000010000 | Group W    |
+| 0x10      | Group W    |
 +-----------+------------+
-| 000001000 | Group X    |
+| 0x20      | Group X    |
 +-----------+------------+
-| 000000100 | Other R    |
+| 0x40      | Other R    |
 +-----------+------------+
-| 000000010 | Other W    |
+| 0x80      | Other W    |
 +-----------+------------+
-| 000000001 | Other X    |
+| 0x100     | Other X    |
 +-----------+------------+
 ```
