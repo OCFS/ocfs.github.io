@@ -2,7 +2,25 @@
 
 All numbers are little-endian. All references to KB, MB, TB, GB, PB, EB, etc. refer to power-of-2 numbers because I am a programmer and I don't like \*iB.
 
-What good is a filesystem without a partition on which to store it? The OCGPT (for OpenComputers General Partition Table) partition table spans sectors 2-9 of the disk and supports up to 64 partitions. A disk may be up to 8 EB in size.
+What good is a filesystem without a partition on which to store it? The OCGPT (for OpenComputers General Partition Table) partition table spans sectors 2-9 of the disk and supports up to 56 partitions. A disk may be up to 8 EB in size.
+
+```
++------------------------------------------------+
+| OCGPT Superblock Format                        |
++------------------------------------------------+
+| Bytes  | Description                           |
++------------------------------------------------+
+| 1-8    | Signature - '\27[OCGPTm'.  Modeled    |
+|        |   after a VT100 escape code.          |
++------------------------------------------------+
+| 9-16   | Size of the bootloader contained after|
+|        | sector 9, in sectors.  0 for OCUEFI   |
+|        | disks.                                |
++------------------------------------------------+
+| 17-512 | Unused.  A use may be found           |
+|        | eventually.                           |
++------------------------------------------------+
+```
 
 ```
 +------------------------------------------------+
