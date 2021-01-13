@@ -10,22 +10,22 @@ What good is a filesystem without a partition on which to store it? The OCGPT (f
 +-------+----------------------------------------+
 | Bytes | Description                            |
 +-------+----------------------------------------+
-|       | Type of the filesystem the partition   |
+|       | Type of the filesystem the partition    |
 | 1     | contains. See RESERVED PARTITION TYPES |
 |       | below.                                 |
 +-------+----------------------------------------+
-| 2-4   | Partition flags. See PARTITION FLAGS.  |
+| 2-4   | Partition flags. See PARTITION FLAGS.   |
 +-------+----------------------------------------+
 |       | Partition GUID - 8-byte string, each   |
 | 5-12  | character ranging from 0-255. Randomly |
 |       | generated on partition creation.       |
 +-------+----------------------------------------+
 |       | Partition label, 36 bytes. If not      |
-| 13-48 | specified, should be a UUID similar to |
+| 13-48 | specified, should be a UUID similar to  |
 |       | components.                            |
 +-------+----------------------------------------+
 | 49-56 | Partition starting sector, 8 bytes for |
-|       | future proofing.                       |
+|       | future proofing.                        |
 +-------+----------------------------------------+
 | 57-64 | Partitioon ending sector, 8 bytes.     |
 +-------+----------------------------------------+
@@ -64,14 +64,14 @@ These flags hold information about the partition.
 | 0x01  | The partition is bootable.             |
 +-------+----------------------------------------+
 | 0x02  | The partition should emulate a managed |
-|       | filesystem.                            |
+|       | filesystem.                             |
 +-------+----------------------------------------+
 | 0x04  | The BIOS, if following OCUEFI, should  |
 |       | load bootloader.lua from this          |
 |       | partition. Only guaranteed to be valid |
 |       | for BROFS as many other filesystems    |
-|       | are too complex to reasonably fit their|
-|       | drivers into an EEPROM.                |
+|       | are too complex to reasonably fit their |
+|       | drivers into an EEPROM.                 |
 +-------+----------------------------------------+
 ```
 
